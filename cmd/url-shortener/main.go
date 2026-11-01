@@ -7,6 +7,8 @@ import (
 	config "github.com/colosss/go_url_shortener/internal"
 	"github.com/colosss/go_url_shortener/internal/lib/logger/sl"
 	"github.com/colosss/go_url_shortener/internal/storage/sqlite"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 const (
@@ -32,10 +34,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	_ = storage
+	router := chi.NewRouter()
 
-	//
-	// TODO: init router: chi, "chi render"
+	//middleware
+
+	router.Use(middleware.RequestID)
+	router.Use(middleware.RealIP)
+	router.Use(middleware.Logger)
+
 	//
 	// TODO: run server
 }
